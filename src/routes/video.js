@@ -20,4 +20,6 @@ route.put(
   videoController.UPDATE
 );
 
+route.get("/video", tokenVerify, videoController.GET);
+
 export default route;

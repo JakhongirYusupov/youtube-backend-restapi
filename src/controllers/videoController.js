@@ -67,7 +67,6 @@ const UPDATE = async (req, res) => {
   try {
     const { id, title } = req.body;
     const video = await model(models.UPDATE_VIDEO, title, id, req.user.id);
-    console.log(video);
     if (video[0])
       return res.json({
         status: 200,
@@ -86,8 +85,29 @@ const UPDATE = async (req, res) => {
   }
 };
 
+const GET = async (req, res) => {
+  try {
+    const { offset = 0, limit = 10, search, user_id } = req.query;
+    if (!user_id) {
+      const videos = await model(models.GETVIDEOS, search, limit, offset);
+      return res.json({ status: 200, data: videos });
+    } else {
+      const videos = await model(models.GETUSERVIDEOS, user_id, limit, offset);
+      return res.json({ status: 200, data: videos });
+    }
+  } catch (error) {
+    errorHandling(error);
+    return res.json({
+      status: 400,
+      message: "Video did not delete",
+      error: error.detail || error.message,
+    });
+  }
+};
+
 export default {
   POST,
   DELETE,
   UPDATE,
+  GET,
 };

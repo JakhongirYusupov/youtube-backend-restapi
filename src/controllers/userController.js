@@ -78,7 +78,23 @@ const LOGIN = async (req, res) => {
   }
 };
 
+const GET = async (req, res) => {
+  try {
+    const { offset = 0, limit = 10 } = req.query;
+    const users = await model(models.GETUSER, 0);
+    res.json({ status: 200, data: users });
+  } catch (error) {
+    errorHangling(error);
+    return res.json({
+      status: 400,
+      message: "Did not login",
+      error: error.detail || error.message,
+    });
+  }
+};
+
 export default {
   REGISTER,
   LOGIN,
+  GET,
 };

@@ -5,6 +5,6 @@ import userController from "../controllers/userController.js";
 const route = Router();
 
 route.post("/register", userMiddleware.REGISTER, userController.REGISTER);
-route.get("/login", userMiddleware.LOGIN, userController.LOGIN);
+route.post("/login", userMiddleware.LOGIN, userController.LOGIN);
 
 export default route;

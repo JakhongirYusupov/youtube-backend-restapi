@@ -33,7 +33,7 @@ const REGISTER = async (req, res) => {
     }
     return res.json({
       status: 400,
-      message: "User did not create check token",
+      message: "Username already exists",
     });
   } catch (error) {
     errorHangling(error);
@@ -80,9 +80,14 @@ const LOGIN = async (req, res) => {
 
 const GET = async (req, res) => {
   try {
-    const { offset = 0, limit = 10 } = req.query;
-    const users = await model(models.GETUSER, 0);
-    res.json({ status: 200, data: users });
+    const { offset = 0, limit = 10, ownuser } = req.query;
+    if (ownuser == "true") {
+      const users = await model(models.GETUSER, req.user.id);
+      res.json({ status: 200, data: users });
+    } else {
+      const users = await model(models.GETUSER, 0);
+      res.json({ status: 200, data: users });
+    }
   } catch (error) {
     errorHangling(error);
     return res.json({

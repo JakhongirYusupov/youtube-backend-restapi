@@ -3,6 +3,9 @@ import userValidation from "../validation/user.js";
 
 const REGISTER = (req, res, next) => {
   try {
+    if (!req.files) {
+      res.json({ status: 400, message: "Select image" });
+    }
     const { mimetype, size } = req.files.profile_img;
     const { error } = userValidation.POST(req.body);
     const imageError = userValidation.UPLOAD({ mimetype, size });

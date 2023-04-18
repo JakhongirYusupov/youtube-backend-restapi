@@ -17,8 +17,13 @@ const POSTVIDEO = `insert into videos(title, url, size, user_id) values($1, $2, 
 const GET_OWN_VIDEO = `select * from videos where title = $1 and user_id = $2`;
 const DELETE_VIDEO = `delete from videos where id = $1 returning *`;
 const UPDATE_VIDEO = `update videos set title = $1 where id = $2 and user_id = $3 returning *`;
-const GETVIDEOS = `select * from videos where case when length($1) > 0 then title ilike concat('%', $1, '%') else true end limit $2 offset $3`;
-const GETUSERVIDEOS = `select * from videos where user_id = $1 limit $2 offset $3`;
+const GETVIDEOS = `select u.username, u.profile_img, v.id, v.title, v.size, v.url, v.create_at, v.user_id
+    from videos v inner join users u on u.id = v.user_id
+    where case when length($1) > 0 then v.title ilike concat('%', $1, '%') else true end limit $2 offset $3`;
+const GETUSERVIDEOS = `select 
+u.username, u.profile_img, v.id, v.title, v.size, v.url, v.create_at, v.user_id
+from videos v inner join users u on u.id = v.user_id where v.user_id = $1 limit $2 offset $3`;
+const GETOWNVIDEOS = `select * from videos where user_id = $1`;
 
 export default {
   POSTUSER,
@@ -31,5 +36,6 @@ export default {
   DELETE_VIDEO,
   UPDATE_VIDEO,
   GETVIDEOS,
+  GETOWNVIDEOS,
   GETUSERVIDEOS,
 };

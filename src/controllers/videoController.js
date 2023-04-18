@@ -105,9 +105,28 @@ const GET = async (req, res) => {
   }
 };
 
+const GETOWNVIDEOS = async (req, res) => {
+  try {
+    const user = req.user;
+    const data = await model(models.GETOWNVIDEOS, user.id);
+    res.json({
+      status: 200,
+      data,
+    });
+  } catch (error) {
+    errorHandling(error);
+    return res.json({
+      status: 400,
+      message: "Video did not delete",
+      error: error.detail || error.message,
+    });
+  }
+};
+
 export default {
   POST,
   DELETE,
   UPDATE,
   GET,
+  GETOWNVIDEOS,
 };

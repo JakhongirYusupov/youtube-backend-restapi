@@ -21,5 +21,6 @@ route.put(
 );
 
 route.get("/video", tokenVerify, videoController.GET);
+route.get("/own-video", tokenVerify, videoController.GETOWNVIDEOS);
 
 export default route;
